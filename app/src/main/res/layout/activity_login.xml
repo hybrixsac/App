@@ -36,6 +36,17 @@
                     android:background="@color/colorapp"
                     android:orientation="vertical">
 
+                    <ImageView
+                        android:id="@+id/ib_toolbar_back"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/round_buttom"
+                        android:paddingStart="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:paddingEnd="10dp"
+                        android:src="@drawable/ic_arrow_back" />
+
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -43,7 +54,7 @@
                         android:gravity="center"
                         android:text="Bienvenido"
                         android:textColor="@color/white"
-                        android:textSize="27sp"
+                        android:textSize="29sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -99,7 +110,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="wrap_content"
                                 app:boxCornerRadiusBottomEnd="10dp"
                                 app:boxCornerRadiusBottomStart="10dp"
                                 app:boxCornerRadiusTopEnd="10dp"
@@ -126,7 +137,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="wrap_content"
                                 app:boxCornerRadiusBottomEnd="10dp"
                                 app:boxCornerRadiusBottomStart="10dp"
                                 app:boxCornerRadiusTopEnd="10dp"

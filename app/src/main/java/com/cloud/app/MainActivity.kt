@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.cloud.app.ui.login.LoginActivity
+import com.cloud.app.ui.registro.RegistroActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun registrer(view: View?) {
         val intent = Intent(this@MainActivity, RegistroActivity::class.java)
-        //intent.putExtra("LOGIN_USER", usuarioResponse)
         startActivity(intent)
     }
 

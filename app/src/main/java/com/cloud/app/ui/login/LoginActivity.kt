@@ -2,18 +2,21 @@ package com.cloud.app.ui.login
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
+import com.cloud.app.AppPreferences
 import com.cloud.app.R
 import com.cloud.app.data.ApiHelper
 import com.cloud.app.data.RetrofitBuilder
 import com.cloud.app.data.model.LoginRequest
 import com.cloud.app.ui.base.ViewModelFactory
 import com.cloud.app.ui.login.viewmodel.LoginViewModel
+import com.cloud.app.ui.principal.PrincipalActivity
 import com.cloud.app.util.Utils
 import com.cloud.app.util.Status.*
 import com.cloud.app.util.UtilsMessage
@@ -88,6 +91,12 @@ class LoginActivity : AppCompatActivity() {
                         resource.data?.let { data ->
                             viewLoading.hide()
 
+                            AppPreferences.usuarioId = data.id.toString()
+                            AppPreferences.usuarioName = data.name.toString()
+                            AppPreferences.usuarioEmail = data.email.toString()
+                            AppPreferences.usuarioPhone = data.phone.toString()
+                            val intent = Intent(this@LoginActivity, PrincipalActivity::class.java)
+                            startActivity(intent)
 
                         }
                     }

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cloud.app">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,22 +16,26 @@
         android:theme="@style/Theme.App"
         tools:targetApi="33">
         <activity
+            android:name=".PrincipalActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistroActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:exported="false" />
+            android:name=".ui.registro.RegistroActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/Theme.App.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
     </application>
 
 </manifest>

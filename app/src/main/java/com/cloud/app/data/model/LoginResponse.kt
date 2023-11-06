@@ -15,6 +15,7 @@ data class LoginResponse(
     val fecha_creacion: String? = null,
     val fecha_ult_conex: Int? = null,
     val estado_registro: Int? = null,
+    val message:String? = null
 ):Parcelable
 
 

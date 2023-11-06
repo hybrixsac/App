@@ -5,15 +5,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.cloud.app.AppPreferences
 import com.cloud.app.R
 import com.cloud.app.data.ApiHelper
 import com.cloud.app.data.RetrofitBuilder
 import com.cloud.app.data.model.LoginRequest
+import com.cloud.app.databinding.ActivityLoginBinding
 import com.cloud.app.ui.base.ViewModelFactory
 import com.cloud.app.ui.login.viewmodel.LoginViewModel
 import com.cloud.app.ui.principal.PrincipalActivity
@@ -25,17 +30,54 @@ import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
-    private lateinit var etUser: TextInputEditText
-    private lateinit var etPass: TextInputEditText
-    private lateinit var btnLogin: Button
     private lateinit var viewLoading: Dialog
+
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        setupUI()
+        binding=ActivityLoginBinding.inflate(layoutInflater)
+        val view=binding.root
+        setContentView(view)
         setupInit()
         setupViewModel()
+        Listeners()
+    }
+
+    private fun Listeners() {
+        binding.etLoginUser.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+                if(s!!.length>0){
+                    binding.lLoginUser.error=""
+                }
+            }
+
+        })
+
+        binding.etLoginPass.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if(s!!.length==8){
+                    binding.lLoginPass.error=""
+                }
+            }
+
+        })
     }
 
     private fun setupViewModel() {
@@ -46,37 +88,34 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupInit() {
-        btnLogin.setOnClickListener(onClickListener)
+        binding.btnLogin.setOnClickListener(onClickListener)
+        binding.ibToolbarBack.setOnClickListener(onClickListener)
         viewLoading = Utils.showLoadingDialog(this)
+        AppPreferences.init(this)
     }
 
-    private fun setupUI() {
-        etUser = findViewById(R.id.et_login_user)
-        etPass = findViewById(R.id.et_login_pass)
-        btnLogin = findViewById(R.id.btn_login)
-    }
 
     private val onClickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.btn_login -> login(view)
-
+            R.id.ib_toolbar_back->onBackPressed()
         }
     }
 
     private fun login(view: View) {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        val usermail = etUser.text!!.toString().trim().lowercase(Locale.getDefault())
-        val pass = etPass.text!!.toString().trim()
+        val usermail = binding.etLoginUser.text!!.toString().trim().lowercase(Locale.getDefault())
+        val pass = binding.etLoginPass.text!!.toString().trim()
 
         if (usermail == "" || !usermail.matches(emailPattern.toRegex())) {
-            etUser.error = "Ingresa tu correo"
-            etUser.requestFocus()
+            binding.lLoginUser.error = "Ingresa tu correo"
+            binding.etLoginUser.requestFocus()
             return
         }
         if (pass == "") {
-            etPass.error = "Ingresa tu clave"
-            etPass.requestFocus()
+            binding.lLoginPass.error = "Ingresa tu clave"
+            binding.etLoginPass.requestFocus()
             return
         }
         val loginrequest=LoginRequest()
@@ -90,13 +129,17 @@ class LoginActivity : AppCompatActivity() {
                     SUCCESS -> {
                         resource.data?.let { data ->
                             viewLoading.hide()
-
-                            AppPreferences.usuarioId = data.id.toString()
-                            AppPreferences.usuarioName = data.name.toString()
-                            AppPreferences.usuarioEmail = data.email.toString()
-                            AppPreferences.usuarioPhone = data.phone.toString()
-                            val intent = Intent(this@LoginActivity, PrincipalActivity::class.java)
-                            startActivity(intent)
+                            if(data.id==0){
+                                Toast.makeText(this@LoginActivity, ""+resource.data.message, Toast.LENGTH_LONG).show()
+                            }else {
+                                AppPreferences.usuarioId = data.id!!.toInt()
+                                AppPreferences.usuarioName =data.name.toString()
+                                AppPreferences.usuarioEmail =data.email.toString()
+                                AppPreferences.usuarioPhone =data.phone!!.toInt()
+                                val intent = Intent(this@LoginActivity, PrincipalActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
 
                         }
                     }
@@ -106,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
                             this@LoginActivity,
                             resource.message
                         )
+
                     }
                     LOADING -> {
                         viewLoading.show()

@@ -1,17 +1,19 @@
 package com.cloud.app.ui.registro
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.cloud.app.R
 import com.cloud.app.data.ApiHelper
 import com.cloud.app.data.RetrofitBuilder
 import com.cloud.app.data.model.RegistroRequest
 import com.cloud.app.databinding.ActivityRegistroBinding
 import com.cloud.app.ui.base.ViewModelFactory
-import com.cloud.app.ui.login.viewmodel.LoginViewModel
 import com.cloud.app.ui.registro.viewmodel.RegistroViewModel
 import com.cloud.app.util.Status
 import com.cloud.app.util.Utils
@@ -30,6 +32,81 @@ class RegistroActivity : AppCompatActivity() {
         setContentView(view)
         setupInit()
         setupViewModel()
+        Listeners()
+    }
+
+    private fun Listeners() {
+        binding.etNameUser.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+                if(s!!.length>0){
+                    binding.lEtNameUser.error=""
+                }
+            }
+
+        })
+
+        binding.etEmailUser.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+                if(s!!.length>0){
+                    if(!s.matches(emailPattern.toRegex())){
+                        binding.lEtEmailUser.error=""
+                    }
+
+
+                }
+            }
+
+        })
+
+        binding.etPassUser.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                   if(s!!.length>0){
+                       binding.lEtPassUser.error=""
+                   }
+            }
+
+        })
+
+        binding.etTelefUser.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if(s!!.length>0){
+                    binding.lEtTelefUser.error=""
+                }
+            }
+
+        })
     }
 
     private fun setupViewModel() {
@@ -41,14 +118,21 @@ class RegistroActivity : AppCompatActivity() {
 
     private fun setupInit() {
         viewLoading = Utils.showLoadingDialog(this)
-        binding.btnRegister.setOnClickListener{
-            v->
-            validarEntradas()
+        binding.btnRegister.setOnClickListener(onClickListener)
+        binding.ibToolbarBack.setOnClickListener(onClickListener)
+
+    }
+
+    private val onClickListener = View.OnClickListener { view ->
+        when (view.id) {
+            R.id.btn_register -> validarEntradas(view)
+            R.id.ib_toolbar_back->onBackPressed()
         }
     }
 
-    private fun validarEntradas() {
+    private fun validarEntradas(view: View) {
         viewLoading.show()
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         var nombre = binding.etNameUser.text?.toString()?.trim()
         var email =binding.etEmailUser.text?.toString()?.trim()
         var userpass =binding.etPassUser.text?.toString()?.trim()
@@ -63,6 +147,12 @@ class RegistroActivity : AppCompatActivity() {
         }
 
         if(email ==""){
+            viewLoading.hide()
+            binding.lEtEmailUser.error = "Debe de ingresar un correo electronico"
+            return
+        }
+
+        if(!email!!.matches(emailPattern.toRegex())){
             viewLoading.hide()
             binding.lEtEmailUser.error = "Debe de ingresar un correo electronico"
             return
@@ -96,6 +186,7 @@ class RegistroActivity : AppCompatActivity() {
         request.name=nombre
         request.email=email
         request.password=userpass
+        request.phone=usertelef.toInt()
         request.imei=imei
         request.model=model
 
@@ -110,7 +201,8 @@ class RegistroActivity : AppCompatActivity() {
                                 Toast.makeText(this@RegistroActivity, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
                                 finish()
                             }else {
-                                Toast.makeText(this@RegistroActivity, "Algo salio mal", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@RegistroActivity, response.message, Toast.LENGTH_LONG).show()
+                                binding.lEtEmailUser.error=""+response.message
                             }
 
 

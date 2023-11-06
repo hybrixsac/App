@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name_2">App</string>
+    <string name="action_closesesion">Cerrar Sesión</string>
 </resources>

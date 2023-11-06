@@ -6,4 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".ui.principal.PrincipalActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtNomUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textSize="19sp"
+            android:textColor="@color/colorapp"
+            android:textStyle="bold"></TextView>
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/_portada" />
+
+
+
+        <TextView
+            android:id="@+id/txtSaldoActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="S/ 100.00"
+            android:textColor="@color/colorapp"
+            android:textSize="49sp"
+            android:textStyle="bold"></TextView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_comprar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:text="Comprar"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorapp"
+            app:cornerRadius="25dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_vender"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:text="Vender"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorapp"
+            app:cornerRadius="25dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_recarga"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:text="Recargar"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorapp"
+            app:cornerRadius="25dp" />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

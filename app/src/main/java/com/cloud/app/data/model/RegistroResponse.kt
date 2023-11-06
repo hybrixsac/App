@@ -9,5 +9,6 @@ data class RegistroResponse
     var id: Int? =0,
     var name: String? =null,
     var email: String? =null,
-    var phone: Int? =0
+    var phone: Int? =0,
+    var message:String?=null
 ):Parcelable

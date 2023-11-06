@@ -1,6 +1,7 @@
 package com.cloud.app.ui.registro
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.cloud.app.MainActivity
 import com.cloud.app.R
 import com.cloud.app.data.ApiHelper
 import com.cloud.app.data.RetrofitBuilder
@@ -125,20 +127,25 @@ class RegistroActivity : AppCompatActivity() {
 
     private val onClickListener = View.OnClickListener { view ->
         when (view.id) {
-            R.id.btn_register -> validarEntradas(view)
-            R.id.ib_toolbar_back->onBackPressed()
+            R.id.btn_register -> validarEntradas()
+            R.id.ib_toolbar_back->backPressed()
         }
     }
 
-    private fun validarEntradas(view: View) {
+    private fun backPressed() {
+        val intent = Intent(this@RegistroActivity, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun validarEntradas() {
         viewLoading.show()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        var nombre = binding.etNameUser.text?.toString()?.trim()
-        var email =binding.etEmailUser.text?.toString()?.trim()
-        var userpass =binding.etPassUser.text?.toString()?.trim()
-        var usertelef=binding.etTelefUser.text?.toString()?.trim()
-        var imei=""
-        var model=""
+        val nombre = binding.etNameUser.text?.toString()?.trim()
+        val email =binding.etEmailUser.text?.toString()?.trim()
+        val userpass =binding.etPassUser.text?.toString()?.trim()
+        val usertelef=binding.etTelefUser.text?.toString()?.trim()
+        val imei=""
+        val model=""
 
         if (nombre == "") {
             viewLoading.hide()
@@ -182,7 +189,7 @@ class RegistroActivity : AppCompatActivity() {
             return
         }
 
-        var request =RegistroRequest()
+        val request =RegistroRequest()
         request.name=nombre
         request.email=email
         request.password=userpass
@@ -196,7 +203,7 @@ class RegistroActivity : AppCompatActivity() {
                     Status.SUCCESS -> {
                         resource.data?.let { data ->
                             viewLoading.hide()
-                            var response=resource.data
+                            val response=resource.data
                             if(response.id!=0){
                                 Toast.makeText(this@RegistroActivity, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
                                 finish()
@@ -222,8 +229,6 @@ class RegistroActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 
 }

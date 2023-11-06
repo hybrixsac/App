@@ -3,17 +3,16 @@ package com.cloud.app.ui.login
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.cloud.app.AppPreferences
+import com.cloud.app.MainActivity
 import com.cloud.app.R
 import com.cloud.app.data.ApiHelper
 import com.cloud.app.data.RetrofitBuilder
@@ -22,10 +21,9 @@ import com.cloud.app.databinding.ActivityLoginBinding
 import com.cloud.app.ui.base.ViewModelFactory
 import com.cloud.app.ui.login.viewmodel.LoginViewModel
 import com.cloud.app.ui.principal.PrincipalActivity
-import com.cloud.app.util.Utils
 import com.cloud.app.util.Status.*
+import com.cloud.app.util.Utils
 import com.cloud.app.util.UtilsMessage
-import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
@@ -98,8 +96,13 @@ class LoginActivity : AppCompatActivity() {
     private val onClickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.btn_login -> login(view)
-            R.id.ib_toolbar_back->onBackPressed()
+            R.id.ib_toolbar_back->backPressed()
         }
+    }
+
+    private fun backPressed() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun login(view: View) {
